@@ -8,27 +8,26 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-
+// Habilita WebSockets en la aplicación
 @Configuration
 @EnableWebSocketMessageBroker
 public class ConfigSocket implements WebSocketMessageBrokerConfigurer {
 
-
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Nos indicará a dónde tenemos que conectarnos,
-        // en este caso a http://localhost:4200/chat-websocket
-
-
+        // Define el endpoint para la conexión de WebSockets
         registry.addEndpoint("/chat-websocket")
                 .setAllowedOrigins("http://localhost:4200") // Dominios permitidos
                 .withSockJS();
     }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        // Habilita el broker de mensajes para gestionar comunicación en tiempo real
         registry.enableSimpleBroker("/chat/");
         // El broker se usará para enviar los mensajes a los clientes
         registry.setApplicationDestinationPrefixes("/app");
+        registry.setUserDestinationPrefix("/user"); // Manejo de mensajes dirigidos a usuarios específicos
+
     }
 }
 
